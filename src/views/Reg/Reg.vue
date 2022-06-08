@@ -2,7 +2,7 @@
   <div class="reg-container">
     <div class="reg-box">
       <div class="reg-title"></div>
-      <el-form ref="regForm" :model="regForm" :rules="regRules">
+      <el-form ref="regForm" :model="regForm" :rules="regRules" @keyup.enter.native="checkReg">
         <el-form-item  prop="username">
           <el-input v-model="regForm.username" prefix-icon="el-icon-s-custom" placeholder="用户名"></el-input>
         </el-form-item>

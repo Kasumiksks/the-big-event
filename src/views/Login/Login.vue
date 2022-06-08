@@ -2,7 +2,7 @@
   <div class="login-container">
     <div class="login-box">
       <div class="login-title"></div>
-      <el-form ref="loginForm" :model="loginForm" :rules='loginRules'>
+      <el-form ref="loginForm" :model="loginForm" :rules='loginRules' @keyup.enter.native="checkLogin">
         <el-form-item  prop="username">
           <el-input v-model="loginForm.username" prefix-icon="el-icon-s-custom" placeholder="用户名"></el-input>
         </el-form-item>
