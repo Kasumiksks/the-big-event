@@ -50,12 +50,14 @@ export default {
           data: this.loginForm
         })
         console.log(res)
-        // 注册失败,返回
+        // 登录失败,返回
         if (res.code !== 0) {
           return this.$message.error(res.message)
         }
-        // 注册成功
+        // 登录成功
         this.$message.success(res.message)
+        // 把token传给 vuex 里的 mutations 中
+        this.$store('updateToken', res.token)
         // 跳转后台首页
         this.$router.push('/main')
       })
