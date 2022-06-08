@@ -57,7 +57,7 @@ export default {
         // 登录成功
         this.$message.success(res.message)
         // 把token传给 vuex 里的 mutations 中
-        this.$store('updateToken', res.token)
+        this.$store.commit('updateToken', res.token)
         // 跳转后台首页
         this.$router.push('/main')
       })
