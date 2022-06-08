@@ -1,12 +1,11 @@
 <template>
-  <div>
-  <router-view></router-view>
-  </div>
+  <div>我是注册页</div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'Reg'
+
 }
 </script>
 
