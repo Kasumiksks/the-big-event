@@ -30,10 +30,7 @@ export default new Vuex.Store({
     async getUserInfo (context) {
       const { data: res } = await axios({
         method: 'get',
-        url: '/my/userinfo',
-        headers: {
-          Authorization: context.state.token
-        }
+        url: '/my/userinfo'
       })
       console.log(res)
       if (res.code === 0) {

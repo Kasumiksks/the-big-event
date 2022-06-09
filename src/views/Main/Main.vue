@@ -53,26 +53,34 @@
           <span>欢迎 {{ userInfo.username || userInfo.nickname }}</span>
         </div>
         <el-menu
-          default-active="1"
+          default-active="/home"
           class="el-menu-vertical-demo"
           background-color="#23262E"
           text-color="#fff"
           active-text-color="#409EFF"
           unique-opened
+          router
         >
           <template v-for="item in menu">
+            <!-- v-for 不能在template标签上添加: key 但可以在遍历的子项添加 -->
             <!-- 不包含子菜单的“一级菜单” -->
-            <el-menu-item :key="item.indexPath" :index="item.indexPath" v-if="!item.children"
-              ><i :class="item.icon"></i>{{item.title}}</el-menu-item
+            <el-menu-item
+              :key="item.indexPath"
+              :index="item.indexPath"
+              v-if="!item.children"
+              ><i :class="item.icon"></i>{{ item.title }}</el-menu-item
             >
             <!-- 包含子菜单的“一级菜单” -->
-            <el-submenu  v-else :key="item.indexPath" :index="item.indexPath" >
+            <el-submenu v-else :key="item.indexPath" :index="item.indexPath">
               <template slot="title">
                 <i :class="item.icon"></i>
-                <span>{{item.title}}</span>
+                <span>{{ item.title }}</span>
               </template>
-              <el-menu-item :index="subItem.indexPath" v-for="subItem in item.children" :key='subItem.indexPath'
-                ><i :class="subItem.icon"></i>{{subItem.title}}</el-menu-item
+              <el-menu-item
+                :index="subItem.indexPath"
+                v-for="subItem in item.children"
+                :key="subItem.indexPath"
+                ><i :class="subItem.icon"></i>{{ subItem.title }}</el-menu-item
               >
             </el-submenu></template
           >
@@ -123,10 +131,7 @@ export default {
     async getAsideList () {
       const { data: res } = await this.$http({
         method: 'get',
-        url: '/my/menus',
-        headers: {
-          Authorization: this.$store.state.token
-        }
+        url: '/my/menus'
       })
       console.log(res)
       this.menu = res.data
