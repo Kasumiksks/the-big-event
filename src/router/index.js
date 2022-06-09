@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '@/views/Login/Login.vue'
 import Reg from '@/views/Reg/Reg.vue'
 import Main from '@/views/Main/Main.vue'
+import Home from '@/views/Menus/Home/Home.vue'
 
 Vue.use(VueRouter)
 
@@ -12,10 +13,6 @@ VueRouter.prototype.push = function push (location) {
   return originalPush.call(this, location).catch(err => err)
 }
 const routes = [
-  {
-    path: '/',
-    redirect: '/login'
-  },
   {
     path: '/login',
     name: 'login',
@@ -27,9 +24,19 @@ const routes = [
     component: Reg
   },
   {
-    path: '/main',
+    path: '/',
     name: 'main',
-    component: Main
+    component: Main,
+    // 重定向
+    redirect: '/home',
+    // 配置子路由
+    children: [
+      {
+        path: 'home',
+        name: 'home',
+        component: Home
+      }
+    ]
   }
 ]
 

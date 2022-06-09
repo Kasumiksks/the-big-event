@@ -88,9 +88,11 @@
       </el-aside>
       <el-container>
         <!-- 页面主体区域 -->
-        <el-main> Main.vue后台主页 </el-main>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
         <!-- 底部 footer 区域 -->
-        <el-footer>&copy; www.itheima.com - 黑马程序员</el-footer>
+        <el-footer>&copy; 咸鱼出品, 必属精品</el-footer>
       </el-container>
     </el-container>
   </el-container>

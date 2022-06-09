@@ -59,7 +59,7 @@ export default {
         // 把token传给 vuex 里的 mutations 中
         this.$store.commit('updateToken', res.token)
         // 跳转后台首页
-        this.$router.push('/main')
+        this.$router.push('/')
       })
     }
   }
