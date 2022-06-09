@@ -15,24 +15,76 @@
         <el-submenu index="1">
           <template slot="title">
             <!-- 头像 -->
-            <img src="../../assets/images/yuanxiang1.jpg" alt="" class="avatar" />
+            <img
+              v-if="userInfo.user_pic"
+              :src="userInfo.user_pic"
+              alt=""
+              class="avatar"
+            />
+            <img
+              v-else
+              src="../../assets/images/jiaran.jpg"
+              alt=""
+              class="avatar"
+            />
             <span>个人中心</span>
           </template>
-          <el-menu-item index="1-1"><i class="el-icon-s-operation"></i>基本资料</el-menu-item>
-          <el-menu-item index="1-2"><i class="el-icon-camera"></i>更换头像</el-menu-item>
-          <el-menu-item index="1-3"><i class="el-icon-key"></i>重置密码</el-menu-item>
+          <el-menu-item index="1-1"
+            ><i class="el-icon-s-operation"></i>基本资料</el-menu-item
+          >
+          <el-menu-item index="1-2"
+            ><i class="el-icon-camera"></i>更换头像</el-menu-item
+          >
+          <el-menu-item index="1-3"
+            ><i class="el-icon-key"></i>重置密码</el-menu-item
+          >
         </el-submenu>
-        <el-menu-item index="2" @click="logout"><i class="el-icon-switch-button"></i>退出</el-menu-item>
+        <el-menu-item index="2" @click="logout"
+          ><i class="el-icon-switch-button"></i>退出</el-menu-item
+        >
       </el-menu>
     </el-header>
     <el-container>
       <!-- 侧边栏区域 -->
-      <el-aside width="200px">Aside</el-aside>
+      <el-aside width="200px">
+        <div class="user-box">
+          <img v-if="userInfo.user_pic" :src="userInfo.user_pic" alt="" />
+          <img v-else src="../../assets/images/jiaran.jpg" alt="" />
+          <span>欢迎 {{ userInfo.username }}</span>
+        </div>
+        <el-menu
+          default-active="1"
+          class="el-menu-vertical-demo"
+          background-color="#23262E"
+          text-color="#fff"
+          active-text-color="#409EFF"
+          unique-opened
+        >
+          <!-- 不包含子菜单的“一级菜单” -->
+          <el-menu-item index="1"
+            ><i class="el-icon-s-tools"></i>一级菜单</el-menu-item
+          >
+          <!-- 包含子菜单的“一级菜单” -->
+          <el-submenu index="2">
+            <template slot="title">
+              <i class="el-icon-s-tools"></i>
+              <span>一级菜单</span>
+            </template>
+            <el-menu-item index="2-1"
+              ><i class="el-icon-star-on"></i>二级菜单</el-menu-item
+            >
+            <el-menu-item index="2-2"
+              ><i class="el-icon-star-on"></i>二级菜单</el-menu-item
+            >
+            <el-menu-item index="2-3"
+              ><i class="el-icon-star-on"></i>二级菜单</el-menu-item
+            >
+          </el-submenu>
+        </el-menu>
+      </el-aside>
       <el-container>
         <!-- 页面主体区域 -->
-        <el-main>
-          Main.vue后台主页
-        </el-main>
+        <el-main> Main.vue后台主页 </el-main>
         <!-- 底部 footer 区域 -->
         <el-footer>© www.itheima.com - 黑马程序员</el-footer>
       </el-container>
@@ -41,27 +93,36 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'Main',
+  created () {
+    this.$store.dispatch('getUserInfo')
+  },
   data () {
-    return {
-    }
+    return {}
   },
   methods: {
     logout () {
+      // 退出登录功能
       this.$confirm('确认退出?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-      // 1. 清空 token
-        this.$store.commit('updateToken', '') // commit:调用mutations里的方法, (函数名,传参)
-        // 2. 跳转到登录页面
-        this.$router.push('/login')
-      }).catch(err => {
-        console.log(err)
       })
+        .then(() => {
+          // 1. 清空 token
+          this.$store.commit('updateToken', '') // commit:调用mutations里的方法, (函数名,传参)
+          // 2. 跳转到登录页面
+          this.$router.push('/login')
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
+  },
+  computed: {
+    ...mapState(['userInfo'])
   }
 }
 </script>
@@ -72,6 +133,34 @@ export default {
   .el-header,
   .el-aside {
     background-color: #23262e;
+    // 左侧边栏用户信息区域
+    .user-box {
+      height: 70px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-top: 1px solid #000;
+      border-bottom: 1px solid #000;
+      user-select: none;
+      img {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background-color: #fff;
+        margin-right: 15px;
+        object-fit: cover;
+      }
+      span {
+        color: white;
+        font-size: 12px;
+      }
+    }
+    // 侧边栏菜单的样式
+    .el-submenu,
+    .el-menu-item {
+      width: 200px;
+      user-select: none;
+    }
   }
   .el-header {
     padding: 0;
@@ -81,7 +170,7 @@ export default {
   .el-main {
     overflow-y: scroll;
     height: 0;
-    background-color: #F2F2F2;
+    background-color: #f2f2f2;
   }
   .el-footer {
     background-color: #eee;
