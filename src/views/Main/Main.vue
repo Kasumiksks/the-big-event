@@ -90,7 +90,7 @@
         <!-- 页面主体区域 -->
         <el-main> Main.vue后台主页 </el-main>
         <!-- 底部 footer 区域 -->
-        <el-footer>© www.itheima.com - 黑马程序员</el-footer>
+        <el-footer>&copy; www.itheima.com - 黑马程序员</el-footer>
       </el-container>
     </el-container>
   </el-container>
@@ -101,6 +101,7 @@ import { mapState } from 'vuex'
 export default {
   name: 'Main',
   created () {
+    if (!this.token) return this.$router.push('/login')
     this.$store.dispatch('getUserInfo')
     this.getAsideList()
   },
@@ -138,7 +139,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['userInfo'])
+    ...mapState(['userInfo', 'token'])
   }
 }
 </script>

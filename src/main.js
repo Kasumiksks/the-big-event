@@ -23,6 +23,17 @@ axios.interceptors.request.use(function (config) {
 }, function (error) {
   return Promise.reject(error) // 对请求错误做些什么
 })
+// 添加响应拦截器
+axios.interceptors.response.use(function (response) {
+// 在发送响应之前做些什么
+  return response
+}, function (error) {
+  // 判断是否为401错误, 是则返回登录页
+  if (error.response.status === 401) {
+    router.push('/login')
+  }
+  return Promise.reject(error) // 对响应错误做些什么
+})
 
 Vue.config.productionTip = false
 // 将axios挂载到Vue原型上
