@@ -53,7 +53,7 @@
           <span>欢迎 {{ userInfo.nickname || userInfo.username }}</span>
         </div>
         <el-menu
-          default-active="/home"
+          :default-active="$route.path"
           class="el-menu-vertical-demo"
           background-color="#23262E"
           text-color="#fff"
