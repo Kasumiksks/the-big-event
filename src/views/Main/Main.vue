@@ -50,7 +50,7 @@
         <div class="user-box">
           <img v-if="userInfo.user_pic" :src="userInfo.user_pic" alt="" />
           <img v-else src="../../assets/images/jiaran.jpg" alt="" />
-          <span>欢迎 {{ userInfo.username }}</span>
+          <span>欢迎 {{ userInfo.username || userInfo.nickname }}</span>
         </div>
         <el-menu
           default-active="1"
@@ -60,26 +60,22 @@
           active-text-color="#409EFF"
           unique-opened
         >
-          <!-- 不包含子菜单的“一级菜单” -->
-          <el-menu-item index="1"
-            ><i class="el-icon-s-tools"></i>一级菜单</el-menu-item
+          <template v-for="item in menu">
+            <!-- 不包含子菜单的“一级菜单” -->
+            <el-menu-item :key="item.indexPath" :index="item.indexPath" v-if="!item.children"
+              ><i :class="item.icon"></i>{{item.title}}</el-menu-item
+            >
+            <!-- 包含子菜单的“一级菜单” -->
+            <el-submenu  v-else :key="item.indexPath" :index="item.indexPath" >
+              <template slot="title">
+                <i :class="item.icon"></i>
+                <span>{{item.title}}</span>
+              </template>
+              <el-menu-item :index="subItem.indexPath" v-for="subItem in item.children" :key='subItem.indexPath'
+                ><i :class="subItem.icon"></i>{{subItem.title}}</el-menu-item
+              >
+            </el-submenu></template
           >
-          <!-- 包含子菜单的“一级菜单” -->
-          <el-submenu index="2">
-            <template slot="title">
-              <i class="el-icon-s-tools"></i>
-              <span>一级菜单</span>
-            </template>
-            <el-menu-item index="2-1"
-              ><i class="el-icon-star-on"></i>二级菜单</el-menu-item
-            >
-            <el-menu-item index="2-2"
-              ><i class="el-icon-star-on"></i>二级菜单</el-menu-item
-            >
-            <el-menu-item index="2-3"
-              ><i class="el-icon-star-on"></i>二级菜单</el-menu-item
-            >
-          </el-submenu>
         </el-menu>
       </el-aside>
       <el-container>
@@ -98,9 +94,12 @@ export default {
   name: 'Main',
   created () {
     this.$store.dispatch('getUserInfo')
+    this.getAsideList()
   },
   data () {
-    return {}
+    return {
+      menu: []
+    }
   },
   methods: {
     logout () {
@@ -119,6 +118,18 @@ export default {
         .catch((err) => {
           console.log(err)
         })
+    },
+    // 获取左侧功能列表
+    async getAsideList () {
+      const { data: res } = await this.$http({
+        method: 'get',
+        url: '/my/menus',
+        headers: {
+          Authorization: this.$store.state.token
+        }
+      })
+      console.log(res)
+      this.menu = res.data
     }
   },
   computed: {
