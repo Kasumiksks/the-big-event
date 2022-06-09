@@ -50,7 +50,7 @@
         <div class="user-box">
           <img v-if="userInfo.user_pic" :src="userInfo.user_pic" alt="" />
           <img v-else src="../../assets/images/jiaran.jpg" alt="" />
-          <span>欢迎 {{ userInfo.username || userInfo.nickname }}</span>
+          <span>欢迎 {{ userInfo.nickname || userInfo.username }}</span>
         </div>
         <el-menu
           default-active="/home"
