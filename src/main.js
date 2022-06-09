@@ -15,7 +15,10 @@ axios.defaults.baseURL = 'http://big-event-vue-api-t.itheima.net'
 axios.interceptors.request.use(function (config) {
 // 在发送请求之前做些什么
 // 使用config请求对象设置统一的token
-  config.headers.Authorization = store.state.token
+// 判断, 只需要给需要权限的接口添加
+  if (store.state.token && config.url.startsWith('/my')) {
+    config.headers.Authorization = store.state.token
+  }
   return config
 }, function (error) {
   return Promise.reject(error) // 对请求错误做些什么
