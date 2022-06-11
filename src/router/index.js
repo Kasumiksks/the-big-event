@@ -5,13 +5,15 @@ import Reg from '@/views/Reg/Reg.vue'
 import Main from '@/views/Main/Main.vue'
 import Home from '@/views/Menus/Home/Home.vue'
 import UserInfo from '@/views/Menus/User/UserInfo.vue'
+import UserAvatar from '@/views/Menus/User/UserAvatar.vue'
+import UserPwd from '@/views/Menus/User/UserPwd.vue'
 
 Vue.use(VueRouter)
 
 // 防止路由报错的问题
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push (location) {
-  return originalPush.call(this, location).catch(err => err)
+  return originalPush.call(this, location).catch((err) => err)
 }
 const routes = [
   {
@@ -41,6 +43,16 @@ const routes = [
         path: 'user-info',
         name: 'userinfo',
         component: UserInfo
+      },
+      {
+        path: 'user-Avatar',
+        name: 'userAvatar',
+        component: UserAvatar
+      },
+      {
+        path: 'user-pwd',
+        name: 'userPwd',
+        component: UserPwd
       }
     ]
   }
