@@ -8,6 +8,8 @@ import UserInfo from '@/views/Menus/User/UserInfo.vue'
 import UserAvatar from '@/views/Menus/User/UserAvatar.vue'
 import UserPwd from '@/views/Menus/User/UserPwd.vue'
 import ArtCate from '@/views/Menus/Article/ArtCate.vue'
+import ArtList from '@/views/Menus/Article/ArtList.vue'
+import NotFound from '@/views/404/404.vue'
 
 Vue.use(VueRouter)
 
@@ -59,8 +61,23 @@ const routes = [
         path: 'art-cate',
         name: 'artCate',
         component: ArtCate
+      },
+      {
+        path: 'art-list',
+        name: 'artList',
+        component: ArtList
       }
+
     ]
+  },
+  {
+    path: '/404',
+    name: 'notfound',
+    component: NotFound
+  },
+  { // 404重定向
+    path: '*',
+    redirect: '/404'
   }
 ]
 
