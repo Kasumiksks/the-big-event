@@ -7,6 +7,7 @@ import Home from '@/views/Menus/Home/Home.vue'
 import UserInfo from '@/views/Menus/User/UserInfo.vue'
 import UserAvatar from '@/views/Menus/User/UserAvatar.vue'
 import UserPwd from '@/views/Menus/User/UserPwd.vue'
+import ArtCate from '@/views/Menus/Article/ArtCate.vue'
 
 Vue.use(VueRouter)
 
@@ -53,6 +54,11 @@ const routes = [
         path: 'user-pwd',
         name: 'userPwd',
         component: UserPwd
+      },
+      {
+        path: 'art-cate',
+        name: 'artCate',
+        component: ArtCate
       }
     ]
   }
