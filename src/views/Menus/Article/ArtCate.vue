@@ -45,10 +45,15 @@
         <el-table-column label="分类别名" prop="cate_alias"></el-table-column>
         <el-table-column label="操作">
           <template v-slot="{ row }">
-            <el-button type="primary" size="mini" @click="showEditDialog(row.id)"
+            <el-button
+              type="primary"
+              size="mini"
+              @click="showEditDialog(row.id)"
               >修改</el-button
             >
-            <el-button type="danger" size="mini">删除</el-button>
+            <el-button type="danger" size="mini" @click="delCate(row.id)"
+              >删除</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -182,6 +187,28 @@ export default {
         this.editVisible = false
         this.getArtList()
       })
+    },
+    // 删除文章分类
+    delCate (id) {
+      if (id === 2213 || id === 2214 || id === 2215) { return this.$message.error('管理员不允许删除该分类!') }
+      this.$confirm('此操作将永久删除该分类, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(async () => {
+          const { data: res } = await this.$http({
+            method: 'delete',
+            url: '/my/cate/del',
+            params: { id }
+          })
+          if (res.code !== 0) return this.$message.error(res.message)
+          this.$message.success(res.message)
+          this.getArtList()
+        })
+        .catch(() => {
+          this.$message.info('已取消删除')
+        })
     }
   }
 }
