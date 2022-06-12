@@ -41,86 +41,14 @@
           @click="pubDialogVisible = true"
           >发表文章</el-button
         >
-        <!-- 发表文章对话框start -->
-        <el-dialog
-          title="发表文章"
-          :visible.sync="pubDialogVisible"
-          fullscreen
-          :before-close="handleClose"
-          @closed="resetForm"
-        >
-          <!-- 发布文章的表单 -->
-          <el-form
-            :model="pubForm"
-            :rules="pubFormRules"
-            ref="pubFormRef"
-            label-width="100px"
-          >
-            <el-form-item label="文章标题" prop="title">
-              <el-input
-                v-model="pubForm.title"
-                placeholder="请输入标题"
-              ></el-input>
-            </el-form-item>
-            <el-form-item label="文章分类" prop="cate_id">
-              <el-select
-                v-model="pubForm.cate_id"
-                placeholder="请选择分类"
-                style="width: 100%"
-              >
-                <el-option
-                  :label="item.cate_name"
-                  :value="item.id"
-                  v-for="item in cateList"
-                  :key="item.id"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <!-- 文章内容 -->
-            <el-form-item label="文章内容" prop="content">
-              <!-- 使用 v-model 进行双向的数据绑定 -->
-              <quill-editor v-model="pubForm.content"></quill-editor>
-            </el-form-item>
-            <el-form-item label="文章封面">
-              <!-- 用来显示封面的图片 -->
-              <img
-                src="../../../assets/images/cover.jpg"
-                alt=""
-                class="cover-img"
-                ref="imgRef"
-              />
-              <br />
-              <!-- 文件选择框，默认被隐藏 -->
-              <input
-                type="file"
-                style="display: none"
-                accept="image/*"
-                ref="iptFile"
-                @change="chooseImg"
-              />
-              <!-- 选择封面的按钮 -->
-              <el-button type="text" @click="$refs.iptFile.click()"
-                >+ 选择封面</el-button
-              >
-            </el-form-item>
-            <el-button type="primary" @click="pubArticle('已发布')"
-              >发布</el-button
-            >
-            <el-button type="info" @click="pubArticle('草稿')"
-              >存为草稿</el-button
-            >
-          </el-form>
-        </el-dialog>
-        <!-- 发表文章对话框end -->
       </div>
-
       <!-- 文章表格区域 -->
       <el-table :data="articleList" style="width: 100%" border stripe>
         <el-table-column label="文章标题" prop="title"></el-table-column>
         <el-table-column label="分类" prop="cate_name"></el-table-column>
         <el-table-column label="发表时间" prop="pub_date">
-          <template v-slot="{row}">
-            {{dateFormat(row.pub_date)}}
+          <template v-slot="{ row }">
+            {{ dateFormat(row.pub_date) }}
           </template>
         </el-table-column>
         <el-table-column label="状态" prop="state"></el-table-column>
@@ -129,7 +57,81 @@
         </el-table-column>
       </el-table>
       <!-- 分页区域 -->
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="q.pagenum"
+        :page-sizes="[2, 3, 5, 10,20]"
+        :page-size="q.pagesize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      >
+      </el-pagination>
     </el-card>
+    <!-- 发表文章对话框start -->
+    <el-dialog
+      title="发表文章"
+      :visible.sync="pubDialogVisible"
+      fullscreen
+      :before-close="handleClose"
+      @closed="resetForm"
+    >
+      <!-- 发布文章的表单 -->
+      <el-form
+        :model="pubForm"
+        :rules="pubFormRules"
+        ref="pubFormRef"
+        label-width="100px"
+      >
+        <el-form-item label="文章标题" prop="title">
+          <el-input v-model="pubForm.title" placeholder="请输入标题"></el-input>
+        </el-form-item>
+        <el-form-item label="文章分类" prop="cate_id">
+          <el-select
+            v-model="pubForm.cate_id"
+            placeholder="请选择分类"
+            style="width: 100%"
+          >
+            <el-option
+              :label="item.cate_name"
+              :value="item.id"
+              v-for="item in cateList"
+              :key="item.id"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <!-- 文章内容 -->
+        <el-form-item label="文章内容" prop="content">
+          <!-- 使用 v-model 进行双向的数据绑定 -->
+          <quill-editor v-model="pubForm.content"></quill-editor>
+        </el-form-item>
+        <el-form-item label="文章封面">
+          <!-- 用来显示封面的图片 -->
+          <img
+            src="../../../assets/images/cover.jpg"
+            alt=""
+            class="cover-img"
+            ref="imgRef"
+          />
+          <br />
+          <!-- 文件选择框，默认被隐藏 -->
+          <input
+            type="file"
+            style="display: none"
+            accept="image/*"
+            ref="iptFile"
+            @change="chooseImg"
+          />
+          <!-- 选择封面的按钮 -->
+          <el-button type="text" @click="$refs.iptFile.click()"
+            >+ 选择封面</el-button
+          >
+        </el-form-item>
+        <el-button type="primary" @click="pubArticle('已发布')">发布</el-button>
+        <el-button type="info" @click="pubArticle('草稿')">存为草稿</el-button>
+      </el-form>
+    </el-dialog>
+    <!-- 发表文章对话框end -->
   </div>
 </template>
 
@@ -157,7 +159,7 @@ export default {
       // 查询参数对象
       q: {
         pagenum: 1, // 当前页码数
-        pagesize: 10, // 页码值
+        pagesize: 10, // 每一页显示的条数
         cate_id: '', // 文章分类的id
         state: '' // 文章的发布状态
       },
@@ -251,7 +253,9 @@ export default {
       // 2.表单校验
       this.$refs.pubFormRef.validate(async (valid) => {
         if (!valid) return this.$message.error('发布失败!请完善文章信息！')
-        if (this.pubForm.cover_img === null) { return this.$message.error('请选择文章封面！') }
+        if (this.pubForm.cover_img === null) {
+          return this.$message.error('请选择文章封面！')
+        }
         // 3. 将 pubForm 转换为 FormData 格式
         const fd = new FormData()
         Object.keys(this.pubForm).forEach((item) => {
@@ -286,6 +290,18 @@ export default {
     // 格式化时间
     dateFormat (time) {
       return dayjs(time).format('YYYY-MM-DD HH:mm:ss')
+    },
+    // 切换每一页显示的条数时触发
+    handleSizeChange (val) {
+      // console.log(`每页 ${val} 条`)
+      this.q.pagesize = val
+      this.getArticleList()
+    },
+    // 切换页码时触发
+    handleCurrentChange (val) {
+      // console.log(`当前页: ${val}`)
+      this.q.pagenum = val
+      this.getArticleList()
     }
   }
 }
