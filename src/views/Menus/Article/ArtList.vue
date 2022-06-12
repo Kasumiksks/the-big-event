@@ -308,7 +308,9 @@ export default {
         this.$message.success(res.message)
         // 5. 关闭对话框
         this.pubDialogVisible = false
-        // 6. 更新文章列表
+        // 6. 清空文件选择的值
+        this.$refs.iptFile.value = ''
+        // 7. 更新文章列表
         this.getArticleList()
       })
     },
