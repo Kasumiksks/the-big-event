@@ -29,8 +29,10 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="small">筛选</el-button>
-            <el-button type="info" size="small">重置</el-button>
+            <el-button type="primary" size="small" @click="getArticleList"
+              >筛选</el-button
+            >
+            <el-button type="info" size="small" @click="resetQ">重置</el-button>
           </el-form-item>
         </el-form>
         <!-- 发表文章的按钮 -->
@@ -44,7 +46,13 @@
       </div>
       <!-- 文章表格区域 -->
       <el-table :data="articleList" style="width: 100%" border stripe>
-        <el-table-column label="文章标题" prop="title"></el-table-column>
+        <el-table-column label="文章标题" prop="title">
+          <template v-slot="{ row }">
+            <el-link type="primary" @click="showArticle(row.id)">{{
+              row.title
+            }}</el-link>
+          </template>
+        </el-table-column>
         <el-table-column label="分类" prop="cate_name"></el-table-column>
         <el-table-column label="发表时间" prop="pub_date">
           <template v-slot="{ row }">
@@ -53,7 +61,11 @@
         </el-table-column>
         <el-table-column label="状态" prop="state"></el-table-column>
         <el-table-column label="操作">
-          <el-button type="danger">删除</el-button>
+          <template v-slot="{ row }">
+            <el-button type="danger" @click="deleteArticle(row.id)"
+              >删除</el-button
+            >
+          </template>
         </el-table-column>
       </el-table>
       <!-- 分页区域 -->
@@ -61,7 +73,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="q.pagenum"
-        :page-sizes="[2, 3, 5, 10,20]"
+        :page-sizes="[2, 3, 5, 10, 20]"
         :page-size="q.pagesize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -132,6 +144,27 @@
       </el-form>
     </el-dialog>
     <!-- 发表文章对话框end -->
+    <!-- 查看文章详情的对话框 -->
+    <el-dialog title="文章预览" :visible.sync="detailVisible" width="80%">
+      <h1 class="title">{{ articleDetails.title }}</h1>
+      <div class="info">
+        <span
+          >作者: {{ articleDetails.nickname || articleDetails.username }}</span
+        >
+        <span>发布时间: {{ dateFormat(articleDetails.pub_date) }}</span>
+        <span>所属分类: {{ articleDetails.cate_name }}</span>
+        <span>状态: {{ articleDetails.state }}</span>
+      </div>
+      <!-- 分割线 -->
+      <el-divider></el-divider>
+
+      <img
+        :src="
+          'http://big-event-vue-api-t.itheima.net' + articleDetails.cover_img
+        "
+      />
+      <div v-html="articleDetails.content"></div>
+    </el-dialog>
   </div>
 </template>
 
@@ -150,6 +183,10 @@ export default {
   },
   data () {
     return {
+      // 文章详情对象
+      articleDetails: {},
+      // 文章详情对话框是否可见
+      detailVisible: false,
       // 文章分类列表
       cateList: [],
       // 文章列表
@@ -302,6 +339,27 @@ export default {
       // console.log(`当前页: ${val}`)
       this.q.pagenum = val
       this.getArticleList()
+    },
+    // 重置筛选条件
+    resetQ () {
+      this.q = {
+        pagenum: 1, // 当前页码数
+        pagesize: 10, // 每一页显示的条数
+        cate_id: '', // 文章分类的id
+        state: '' // 文章的发布状态
+      }
+      this.getArticleList()
+    },
+    // 点击标题预览文章
+    async showArticle (id) {
+      const { data: res } = await this.$http({
+        method: 'get',
+        url: '/my/article/info',
+        params: { id }
+      })
+      if (res.code !== 0) return this.$message.error(res.message)
+      this.articleDetails = res.data
+      this.detailVisible = true
     }
   }
 }
@@ -326,5 +384,19 @@ export default {
   width: 400px;
   height: 280px;
   object-fit: cover;
+}
+.title {
+  font-size: 24px;
+  text-align: center;
+  font-weight: normal;
+  color: #000;
+  margin: 0 0 10px 0;
+}
+
+.info {
+  font-size: 12px;
+  span {
+    margin-right: 20px;
+  }
 }
 </style>
