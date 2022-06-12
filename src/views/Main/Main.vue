@@ -92,7 +92,11 @@
           <router-view></router-view>
         </el-main>
         <!-- 底部 footer 区域 -->
-        <el-footer>&copy; 咸鱼出品, 必属精品</el-footer>
+        <el-footer
+          ><p>&copy; 咸鱼出品, 必属精品</p>
+          &emsp;&emsp;
+          <p>你所热爱的, 就是你的生活</p>
+        </el-footer>
       </el-container>
     </el-container>
   </el-container>
