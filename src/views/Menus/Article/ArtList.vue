@@ -360,6 +360,26 @@ export default {
       if (res.code !== 0) return this.$message.error(res.message)
       this.articleDetails = res.data
       this.detailVisible = true
+    },
+    // 删除文章
+    deleteArticle (id) {
+      this.$confirm('您真的要删除此文章吗?', '提示', {
+        confirmButtonText: '我确定',
+        cancelButtonText: '我再想想',
+        type: 'warning'
+      }).then(async () => {
+        const { data: res } = await this.$http({
+          method: 'delete',
+          url: '/my/article/info',
+          params: { id }
+        })
+        if (res.code !== 0) this.$message.error(res.message)
+        this.$message.success(res.message)
+        if (this.articleList.length === 1 && this.q.pagenum > 1) this.q.pagenum--
+        this.getArticleList()
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 }
