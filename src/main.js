@@ -8,6 +8,8 @@ import VueQuillEditor from 'vue-quill-editor'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
+// 控制权限--路由守卫
+import '@/permission'
 
 // 引入全局样式
 import './assets/global.less'
