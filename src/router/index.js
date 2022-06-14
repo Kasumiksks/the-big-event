@@ -1,15 +1,15 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '@/views/Login/Login.vue'
-import Reg from '@/views/Reg/Reg.vue'
-import Main from '@/views/Main/Main.vue'
-import Home from '@/views/Menus/Home/Home.vue'
-import UserInfo from '@/views/Menus/User/UserInfo.vue'
-import UserAvatar from '@/views/Menus/User/UserAvatar.vue'
-import UserPwd from '@/views/Menus/User/UserPwd.vue'
-import ArtCate from '@/views/Menus/Article/ArtCate.vue'
-import ArtList from '@/views/Menus/Article/ArtList.vue'
-import NotFound from '@/views/404/404.vue'
+const Login = () => import('@/views/Login/Login.vue')
+const Reg = () => import('@/views/Reg/Reg.vue')
+const Main = () => import('@/views/Main/Main.vue')
+const Home = () => import('@/views/Menus/Home/Home.vue')
+const UserInfo = () => import('@/views/Menus/Home/Home.vue')
+const UserAvatar = () => import('@/views/Menus/User/UserAvatar.vue')
+const UserPwd = () => import('@/views/Menus/User/UserPwd.vue')
+const ArtCate = () => import('@/views/Menus/Article/ArtCate.vue')
+const ArtList = () => import('@/views/Menus/Article/ArtList.vue')
+const NotFound = () => import('@/views/404/404.vue')
 
 Vue.use(VueRouter)
 
