@@ -44,20 +44,7 @@ export default {
       // 只要一个表单项没有验证通过，返回false
         if (!valid) return alert('注册失败, 输入内容不符合规范')// 校验没有通过
         // 发送请求
-        const { data: res } = await this.$http({
-          method: 'post',
-          url: '/api/login',
-          data: this.loginForm
-        })
-        console.log(res)
-        // 登录失败,返回
-        if (res.code !== 0) {
-          return this.$message.error(res.message)
-        }
-        // 登录成功
-        this.$message.success(res.message)
-        // 把token传给 vuex 里的 mutations 中
-        this.$store.commit('user/updateToken', res.token)
+        await this.$store.dispatch('user/userLogin', this.loginForm)
         // 跳转后台首页
         this.$router.push('/')
       })

@@ -104,6 +104,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { loadMenuList } from '@/api/user'
 export default {
   name: 'Main',
   created () {
@@ -136,10 +137,7 @@ export default {
     },
     // 获取左侧功能列表
     async getAsideList () {
-      const { data: res } = await this.$http({
-        method: 'get',
-        url: '/my/menus'
-      })
+      const { data: res } = await loadMenuList()
       console.log(res)
       this.menu = res.data
     }
