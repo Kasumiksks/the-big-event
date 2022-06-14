@@ -108,7 +108,7 @@ export default {
   name: 'Main',
   created () {
     if (!this.token) return this.$router.push('/login')
-    this.$store.dispatch('getUserInfo')
+    this.$store.dispatch('user/getUserInfo')
     this.getAsideList()
   },
   data () {
@@ -126,7 +126,7 @@ export default {
       })
         .then(() => {
           // 1. 清空 token
-          this.$store.commit('updateToken', '') // commit:调用mutations里的方法, (函数名,传参)
+          this.$store.commit('user/updateToken', '') // commit:调用mutations里的方法, (函数名,传参)
           // 2. 跳转到登录页面
           this.$router.push('/login')
         })
@@ -145,7 +145,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['userInfo', 'token'])
+    ...mapState('user', ['userInfo', 'token'])
   }
 }
 </script>

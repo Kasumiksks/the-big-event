@@ -23,8 +23,8 @@ axios.interceptors.request.use(function (config) {
 // 在发送请求之前做些什么
 // 使用config请求对象设置统一的token
 // 判断, 只需要给需要权限的接口添加
-  if (store.state.token && config.url.startsWith('/my')) {
-    config.headers.Authorization = store.state.token
+  if (store.state.user.token && config.url.startsWith('/my')) {
+    config.headers.Authorization = store.state.user.token
   }
   return config
 }, function (error) {

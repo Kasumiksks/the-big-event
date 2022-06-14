@@ -40,7 +40,7 @@ export default {
       }, */
       // 因为v-model和userForm是双向绑定，如果直接将vuex中地址给到userForm，那么当表单数据改变就会改变vuex里面的数据
       // 所以此处使用展开运算符
-      userForm: { ...this.$store.state.userInfo },
+      userForm: { ...this.$store.state.user.userInfo },
       // 表单验证规则对象
       userFormRules: {
         nickname: [
@@ -67,11 +67,11 @@ export default {
         if (res.code !== 0) return this.$message.error('修改失败')
         this.$message.success('修改成功')
         // 重新渲染
-        this.$store.dispatch('getUserInfo')
+        this.$store.dispatch('user/getUserInfo')
       })
     },
     resetMsg () {
-      this.userForm = { ...this.$store.state.userInfo }
+      this.userForm = { ...this.$store.state.user.userInfo }
     }
   }
 }

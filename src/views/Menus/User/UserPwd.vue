@@ -100,7 +100,7 @@ export default {
         // 重置表单
         this.$refs.pwdFormRef.resetFields()
         // 清空 token
-        this.$store.commit('updateToken', '') // commit:调用mutations里的方法, (函数名,传参)
+        this.$store.commit('user/updateToken', '') // commit:调用mutations里的方法, (函数名,传参)
         // 跳转到登录页面
         this.$router.push('/login')
       })

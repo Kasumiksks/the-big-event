@@ -61,7 +61,7 @@ export default {
       if (res.code !== 0) return this.$message.error(res.message)
       this.$message.success(res.message)
       // 更新页面
-      this.$store.dispatch('getUserInfo')
+      this.$store.dispatch('user/getUserInfo')
       this.avatar = ''
     }
   }
